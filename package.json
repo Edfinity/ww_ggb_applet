@@ -1,0 +1,26 @@
+{
+  "name": "ww_ggb_applet",
+  "version": "1.0.0",
+  "description": "Puts Geogebra in WeBWork problems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edfinity/ww_ggb_applet.git"
+  },
+  "keywords": [
+    "WeBWork",
+    "Geogebra"
+  ],
+  "author": "Edfinity",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Edfinity/ww_ggb_applet/issues"
+  },
+  "homepage": "https://github.com/Edfinity/ww_ggb_applet#readme",
+  "devDependencies": {
+    "coffee-script": "^1.12.7"
+  }
+}
