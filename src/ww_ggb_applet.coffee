@@ -1,83 +1,77 @@
 exports.WwGgbApplet = class WwGgbApplet
-  @instances = []
-  @locked = false
-  @$frame = null
+  _instances = []
+  _options = {}
 
-  @lockAll: ->
-    @locked = true
-    instance.lock() for instance in @instances
+  _buildInnerId = ->
+    # Build inner element because of Geogebra's use of global id for its inject method.
+    Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10)
 
-  @unlockAll: -> @locked = false
+  _buildApplet = ($element, params) ->
+    applet = new GGBApplet(params, true)
+    innerId = _buildInnerId()
+    inner = jQuery("<div>").attr(id: innerId).appendTo($element.empty().css(border: 'none', width: params.width, height: params.height))
 
-  @recreateAll: ->
-    instance.recreate() for instance in @instances
-  
-  constructor: (@elementId, @geogebraParams) ->
-    console.log('GeogebraApplet3 depends on the jQuery library.') unless jQuery?
-
-    # User inner element because of Geogebra's use of global id for its inject method.
-    @innerId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10)
-
-    @geogebraParams.id ?= @elementId
-    @geogebraParams.width ?= 400
-    @geogebraParams.height ?= 400
-
-    userOnLoad = @geogebraParams.appletOnLoad
-    
-    @geogebraParams.appletOnLoad = (applet) =>
-      @applet = applet
-      
-      applet.registerUpdateListener(@geogebraParams.appletOnUpdate) if @geogebraParams.appletOnUpdate
-      userOnLoad?(applet)
-
-      @hideAllAnswers() if @geogebraParams.hideAnswers
-      @lock() if WwGgbApplet.locked      
-
-    WwGgbApplet.instances.push this
-    @buildApplet()
-
-  $element: -> jQuery(WwGgbApplet.$frame ? document).find("[id=#{@elementId}]")
-
-  buildApplet: ->
-    if GGBApplet?
-      @buildLoaded()
-    else
-      jQuery.ajax
-        url: 'https://cdn.geogebra.org/apps/deployggb.js'
-        dataType: "script"
-        cache: true
-        success: => @buildLoaded()
-
-  buildLoaded: ->
-    @ggbApplet = new GGBApplet(@geogebraParams, true)
-
-    console.log("Element not found") if not @$element().get(0)
-    @$inner = jQuery("<div>").attr(id: @innerId).appendTo(@$element().empty().css(border: 'none', width: @geogebraParams.width, height: @geogebraParams.height))
-    
     if document.readyState is 'complete'
-      @ggbApplet.inject(@innerId)
-      @$inner.css(width: @geogebraParams.width, height: @geogebraParams.height)
+      applet.inject(innerId)
+      inner.css(width: params.width, height: params.height)
     else
-      window.addEventListener "load", => @ggbApplet.inject(@innerId)
-   
-  setAnswer: (answerId, value) ->
-    jQuery(WwGgbApplet.$frame ? document).find("##{answerId}").val(value).trigger('rapid-change')
-        
-  hideAnswer: (answerId) ->
-    jQuery(WwGgbApplet.$frame ? document).find("##{answerId}").hide().addClass('hide-marks')
-    jQuery(WwGgbApplet.$frame ? document).find("##{answerId} + .answer-mark").hide()
-    jQuery(WwGgbApplet.$frame ? document).find$('.submit.button').removeClass 'disabled'
+      window.addEventListener "load", => applet.inject(innerId)
 
-  hideAllAnswers: ->
-    jQuery(WwGgbApplet.$frame ? document).find('[id^="AnSwEr"]').hide().addClass('hide-marks')
-    jQuery(WwGgbApplet.$frame ? document).find('[id^="AnSwEr"] + .answer-mark').hide()    
+  @configure: (options) ->
+    jQuery.extend(_options, {onHideAnswer: jQuery.noop, onHideAnswers: jQuery.noop}, options) if jQuery?
+
+  @lock: ($container='body', lock=true) ->
+    instance.lock(lock) for instance in @getInstances($container)
+
+  @getInstances: ($container='body') ->
+    $container = jQuery($container)
+    containedInstances = []
+
+    if $container.get(0)
+      for instance in _instances
+        containedInstances.push(instance) if jQuery.contains($container.get(0), instance.$container.get(0))
+    containedInstances
+
+  constructor: (@elementId, @geogebraParams) ->
+    @locked = false
+
+    if jQuery?
+      $el = jQuery("[id=#{@elementId}]:last")
+      if $el.get(0)?
+        @$container = $el.parent()
+        @geogebraParams = jQuery.extend({}, {id: @elementId, width: 400, height: 400}, @geogebraParams)
+
+        userOnLoad = @geogebraParams.appletOnLoad
+        @geogebraParams.appletOnLoad = (applet) =>
+          @applet = applet
+          applet.registerUpdateListener(jQuery.proxy(@geogebraParams.appletOnUpdate, this)) if @geogebraParams.appletOnUpdate
+          jQuery.proxy(userOnLoad, this)?(applet)
+          @hideAnswers() if @geogebraParams.hideAnswers
+          @lock() if @locked
+
+        @ggbApplet = _buildApplet($el, @geogebraParams)
+        _instances.push this
+      else
+        console.log("Element not found")
+    else
+      console.log('GeogebraApplet3 depends on the jQuery library.')
+
+  setAnswer: (answerId, value) ->
+    @$container.find("##{answerId}").val(value).trigger('rapid-change')
+
+  hideAnswer: (answerId) ->
+    @$container.find("##{answerId}").hide()
+    _options.onHideAnswer(@$container, answerId)
+
+  hideAnswers: ->
+    @$container.find('[id^="AnSwEr"]').hide()
+    _options.onHideAnswers(@$container, answerId)
 
   setCoordinates: (answerId, defaults) ->
-    answers = jQuery(WwGgbApplet.$frame ? document).find("##{answerId}").val().split(';')
-    answers.pop() # remove correctness
+    answers = @$container.find("##{answerId}").val().split(';')
+    answers.pop() if answers.length > 2 # remove correctness
 
     answerCoordinates = []
-
     for answer in answers
       values = answer.split('=')
       answerCoordinates[values[0]] = values[1]
@@ -94,10 +88,10 @@ exports.WwGgbApplet = class WwGgbApplet
     value.push @applet.getValue(answerKey); # should return 0 or 1
     @setAnswer answerId, value.join(';')
 
-  lock: ->
+  lock: (lock=true) ->
+    @locked = lock
     if @applet?
       for name in @applet.getAllObjectNames()
-        @applet.setFixed(name, true)
+        @applet.setFixed(name, lock)
 
-  recreate: ->
-    @buildApplet() unless @$inner? and not @$inner.is(':empty')
+window?.WwGgbApplet = WwGgbApplet
