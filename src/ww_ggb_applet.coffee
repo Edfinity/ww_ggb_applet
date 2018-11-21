@@ -1,4 +1,4 @@
-exports.WwGgbApplet = class WwGgbApplet
+class WwGgbApplet
   _instances = []
   _options = {}
 
@@ -95,3 +95,4 @@ exports.WwGgbApplet = class WwGgbApplet
         @applet.setFixed(name, lock)
 
 window?.WwGgbApplet = WwGgbApplet
+exports?.WwGgbApplet = WwGgbApplet

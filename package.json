@@ -1,6 +1,6 @@
 {
   "name": "ww_ggb_applet",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Puts Geogebra in WeBWork problems",
   "main": "index.js",
   "scripts": {
