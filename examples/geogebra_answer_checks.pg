@@ -1,0 +1,101 @@
+## DESCRIPTION
+##
+## ENDDESCRIPTION
+
+## DBsubject('')
+## DBchapter('')
+## DBsection('')
+## Date('')
+## Author('')
+## Institution('')
+## TitleText1('')
+## EditionText1('1')
+## AuthorText1('')
+## Section1('')
+## Problem1('')
+## KEYWORDS('', '')
+
+############################################################## 
+#  Initialization
+##############################################################
+
+DOCUMENT();      
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "PGML.pl",
+    "contextArbitraryString.pl",
+);
+
+TEXT(beginproblem());
+
+##############################################################
+#  Problem Setup
+##############################################################
+
+Context("ArbitraryString");
+$geogebraChecker = sub {
+  my ($correct,$student,$ansHash) = @_;
+  my @values = split(';', $student->value);
+  return $values[-1] == '1' ? 1 : 0;  
+};
+$ans = String('1')->cmp(checker => $geogebraChecker);
+
+$m = non_zero_random(-6, 6);  
+
+if ($m == 1) {
+    $line = "y = x";
+} elsif ($m == -1) {
+    $line = "y = -x";
+} else {
+    $line = "y = $m x";
+}
+
+HEADER_TEXT('<script type="text/javascript" src="https://cdn.geogebra.org/apps/deployggb.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ww_ggb_applet/lib/ww_ggb_applet.js"></script>');
+
+TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
+
+<div id="applet2" class="ww-ggb"></div>
+
+<script>
+  var onUpdate = function(obj) {
+    this.setCoordinateAnswer('AnSwEr0001', ['A', 'B'], 'AnsCorrect')
+  }
+
+  var onLoad = function(applet) {
+    applet.setCoordSystem(-6.5, 6.5, -6.5, 6.5);
+    this.setCoordinates('AnSwEr0001', { A:'(-1.2, 1.8)', B: '(1.8, -0.63)' })
+    
+    applet.evalCommand("L = Line[A, B]");
+    applet.evalCommand("Solution: y = $m x");
+    applet.setVisible("Solution", false);
+    applet.evalCommand("AnsCorrect = (L == Solution)");
+  }
+  
+  encodedApp = "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"
+  new WwGgbApplet('applet2', {width: 400, height: 400, ggbBase64: encodedApp, appletOnLoad: onLoad, appletOnUpdate: onUpdate, hideAnswers: true}); 
+</script>
+
+
+END_SCRIPT
+
+Context("Numeric");
+
+##############################################################
+#  Text
+##############################################################
+
+BEGIN_PGML
+
+Graph the line [``[$line]``] by dragging the points to appropriate coordinates.
+[_________]{$ans}
+END_PGML
+
+
+##############################################################
+#  Answers and Solutions
+##############################################################
+
+ENDDOCUMENT();

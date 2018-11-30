@@ -18,6 +18,7 @@ HEADER_TEXT('<script type="text/javascript" src="https://cdn.geogebra.org/apps/d
 Continuing in the setup section, start with this example code:
 
 ```
+TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
 <div id="applet1" class="ww-ggb"></div>
 
 <script>
@@ -32,9 +33,11 @@ Continuing in the setup section, start with this example code:
     applet.evalCommand("L = Line[A, B]");
   }
   
-  encodedApp = "Your encoded app here"
+  encodedApp = "Your encoded app here";
   wwGgb = new WwGgbApplet('applet1', {width: 400, height: 400, ggbBase64: encodedApp, appletOnLoad: onLoad, appletOnUpdate: onUpdate, hideAnswers: true}); 
 </script>
+END_SCRIPT
+
 ```
 
 Pass the id of the `<div>` tag you create to the constructor. You can pass any Geogebra initialization variables as the second
