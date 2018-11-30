@@ -15,6 +15,8 @@ HEADER_TEXT('<script type="text/javascript" src="https://cdn.geogebra.org/apps/d
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ww_ggb_applet/lib/ww_ggb_applet.js"></script>');
 ```
 
+(*Note:* This step is not necessary if your problem will run only in [Edfinity](https://www.edfinity.com), which preloads these libraries.)
+
 Continuing in the setup section, start with this example code:
 
 ```
