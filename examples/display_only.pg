@@ -49,8 +49,8 @@ HEADER_TEXT('<script type="text/javascript" src="https://cdn.geogebra.org/apps/d
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ww_ggb_applet/lib/ww_ggb_applet.js"></script>');
 
 TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
-<div id="applet1" class="ww-ggb" style="margin: auto"></div>
-
+<div id="applet1" class="ww-ggb" style="margin: auto; clear: both"></div>
+<br/>
 <script language="javascript">
 encodedApp = "UEsDBBQACAAIAHq+ZT0AAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VfbbuM2EH3ufgWhAkHSrmVRom6NnUWatkCAbTdAtkXQYh9oibLZSKIrUYmcP+iH9Mf6JR2Skiw7l2ZTFL34wZKGw5nhmTOj0exNW+TohlU1F+XcwrZjIVYmIuXlcm41MptE1puTV7MlE0u2qCjKRFVQObc827WUvOEnrz6Z1Stxi2iuVX7g7HZuZTSvmYXqdcVoWq8Ykzty2rQ857TavFv8zBJZbxeMkfNy3YAXWTUgS4r0La/7x6lymNMFyyHGS7nJGUI3NJ9brlnKRCkRqvkdg/No2Wyqw5yxJsl5ymmpQtFhgxJCtzyVK6UbxBZaMb5cgavAjYy5RIgqvdzUkhWo/ZFVAhx5ru0FLokD4oWhh/3IQptuiRA7cL0Irj4m2AkBgoTmEIof2U7swC7sxMRzI/C1eXRJe2Y3l0xKOGSNaMvqHo1lxdPx/Xn9pcjTAcC14KU8o2vZVDqHTifSSOnHSp3wtFzmrJNhgHjFkuuFaC8NbJ4x/X6z1lt0OIvlmchFhSo4pe+DQnddmKvWUXEOWo7WcbRGZ0MZHdZx7GoNfV2Yq0kuL01o3blxf2js9G54jZQAjCvq9XBoVswtCzUll2/7B8mT6+1Jlf53TbEAyvfblMJXQDBaJszUwK4X/Pd5mU33SDm7ZlXJcsO8ErLfiKY2/DYJ1qGlLOEFPJoF3MWrUvo9xGSkKVtWrNPvqsqAqledMbv3xLNpH4SKoYbwEwntAU4g1fFOk6Qpmpxq2TdNaRYPv25psQY7+EiVt1wJSPEFbXJ0wWhVi9JCKZWw3VJ+b0V1rbvCe9ZKRBfiZmu4edyyffApdo713/k2sPoLLTnLAWFEyxSlFV0iuWKoYvAgwEEuSiNpJyqtNhCO5Sql+ryJKAq1r6QFhHGhykVHyVUXQtSZW+0p7DKQiUb20iuDVrdddZicFQzaj9SFo+tu4MuVNXRKoZveHp+2zQ2W75VaX0ZwlPWKwl3P0pxuWLWTU23vXZbVTKJ2bk2gB23mFiGj1W9Fyva4A3zSaEOjWyvzisRrxtLupSC7VoDW4FA3lhEdNYtq5cyx49jFcRwGxHcxVLSvnato0d2otkxLUu1XR+F3tWDgu5eRngp7STnPfmrRQS6PkWs7r9Uf+gy1r5GW//7rb0YcgHiC2g8fADsMcGAdDHUB2wHEUU6zp3Oa9aH0acus3ZYlV8DCktW1eiENsE2fzv0Iy3HynRelfptcZ7+fPhrc49iflxIaCc33sM8O2yMD6ABne3h1dA9O+jScZVOwiicDEFS7geCb/gh2HBESOF7oBgGJYkz+EpbY94Y31hZP75l44hfhyVoYgmo1YA2lDk0P6gsW5tbBL42Qx1dojswd+hwdKiQB3ek9uNRGa9fKP0msjLfQYLVk2730/FVDVrPtFKinCgI3/RBicihpJXW3Rap3YNv3CIHxJ/Ci2FPjle4dE8+OQs/DxAuI64Sui8et5M+BdneAvuTLEmI+hbF0DDl9Ftru/wpt4sXjn3lNTFyQRzDX+k738z8C7g5q3QkeAHS/2uUD1b7/+ng2mvh5dPB26PCCKUJrKTFMOPwO4Kc5kmaqMDatZzDJ+w8xyR2YhB9kkm87ijFx7LuxQ+DjRxPJs4MgivwwdsMwCkgcRR9XtmQnTxso1uxQHj0fYfLvQ3gPN6BsQJwwwnHkRyF2Q5d0yBEceiT2YhyEcQg3jyE3HY/n+ju3+0w/+QNQSwcI3r/ydgkFAADYDwAAUEsBAhQAFAAIAAgAer5lPd6/8nYJBQAA2A8AAAwAAAAAAAAAAAAAAAAAAAAAAGdlb2dlYnJhLnhtbFBLBQYAAAAAAQABADoAAABDBQAAAAA=";
 wwGgb = new WwGgbApplet('applet1', {width: 400, height: 400, ggbBase64: encodedApp})
@@ -74,8 +74,6 @@ $PAR
 END_TEXT
 Context()->normalStrings;
 
-Scaffold::Begin();
-Section::Begin("Increments");
 BEGIN_TEXT
 If \(h=f(t)\) is the height in inches \(y\) when \(x=t\) then the area of the rectangle 
 above the interval \( [t, t+dt]\) is given by \{ans_rule(20)\}\{AnswerFormatHelp("units")\}
@@ -93,9 +91,7 @@ ANS( $area_inc->cmp,
 $distance_inc->cmp,
 $volume_inc->cmp
 );
-Section::End();
 
-Section::Begin("Accumulation");
 BEGIN_TEXT
 $PAR
 In all cases we could summarize by using \(f(t)dt\) for the incremental change in the integral.
@@ -120,8 +116,6 @@ Give two more examples of  additive quantities  and write formulas
 
 END_TEXT
 ANS(essay_cmp());
-Section::End();
-Section::Begin("Rate of change");
 BEGIN_TEXT
 The rate of change of area with respect to \(t\) as \(t\) goes from \(1\) to \(1+dt\) is \{ans_rule(20)\} $PAR
 The rate of change of area as \(t\) goes from \(1.5\) to \(1.5+dt\) is \{ans_rule(20)\} $PAR
@@ -144,9 +138,7 @@ $displacement_derivative1->cmp, $displacement_derivative15->cmp,
 $volume_derivative1->cmp, $volume_derivative15->cmp,
 essay_cmp()
 );
-Section::End();
 
-Scaffold::End();
 ##############################################################
 #
 #  Answers
