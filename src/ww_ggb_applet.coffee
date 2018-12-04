@@ -65,7 +65,7 @@ class WwGgbApplet
 
   hideAnswers: ->
     @$container.find('[id^="AnSwEr"]').hide()
-    _options.onHideAnswers(@$container, answerId)
+    _options.onHideAnswers(@$container)
 
   setCoordinates: (answerId, defaults) ->
     answers = @$container.find("##{answerId}").val().split(';')
