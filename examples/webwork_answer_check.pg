@@ -1,0 +1,82 @@
+## DBsubject(Algebra)
+## DBchapter(Conic sections)
+## DBsection(Circles)
+
+DOCUMENT();  
+loadMacros(
+        "PGstandard.pl",
+        "MathObjects.pl",
+        "PGinfo.pl",
+        "AppletObjects.pl",
+    #"source.pl",
+        "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+$showPartialCorrectAnswers = 1;
+Context("Numeric");
+
+#################################
+# Set up problem
+# Set parameters for a circle
+#################################
+
+HEADER_TEXT('<script type="text/javascript" src="https://cdn.geogebra.org/apps/deployggb.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ww_ggb_applet/lib/ww_ggb_applet.js"></script>');
+
+($a0, $b0) = ( random(-5,5,1), random(-5,5,1) );
+$r0 = random(2,5,1);
+$top0 = $b0 + $r0;
+($a1, $b1) = ( random(-5,5,1), random(-5,5,1) );
+$r1 = random(2,5,1);
+$top1 = $b1 + $r1;
+$r2 = $r1**2;
+$answer = Compute("($a1, $b1, $r2)");
+
+TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
+<div id="applet1" class="ww-ggb"></div>
+
+<script>
+  var onUpdate = function(obj) {
+    // called when any applet variable changes
+    var Ax = this.applet.getXcoord("A");
+    var Ay = this.applet.getYcoord("A");
+    var Bx = this.applet.getXcoord("B");
+    var By = this.applet.getYcoord("B");
+    var r2 = Math.pow( (Ax-Bx),2) + Math.pow( (Ay -By),2);
+    this.setAnswer('AnSwEr0001', Ax + ',' + Ay + ',' + r2);
+  }
+
+  var onLoad = function(applet) {
+    applet.evalCommand("A = ($a0,$b0)");
+    applet.setCoords('B',$a1,$b1) ;
+  }
+  
+  encodedApp = "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";
+  new WwGgbApplet('applet1', {width: 526, height: 552, ggbBase64: encodedApp, appletOnLoad: onLoad, appletOnUpdate: onUpdate, hideAnswers: true}); 
+</script>
+END_SCRIPT
+
+#######################################
+# TEXT
+#######################################
+
+Context()->texStrings;
+BEGIN_TEXT
+Graph the circle with equation 
+\[(x - $a1)^2 + (y - $b1)^2 = $r2 \] 
+by clicking and dragging points \( A \) and \( B \) in the
+interactive figure below. 
+Click the submit answers button when you are done.
+
+$PAR
+\{NAMED_ANS_RULE("AnSwEr0001", 20)\} $PAR
+END_TEXT
+
+#########################################
+# ANSWER section
+#########################################
+
+NAMED_ANS( 'AnSwEr0001' => $answer->cmp );
+
+ENDDOCUMENT();
