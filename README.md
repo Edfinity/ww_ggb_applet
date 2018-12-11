@@ -24,8 +24,6 @@ TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
 <div id="applet1" class="ww-ggb"></div>
 
 <script>
-  var wwGgb = null;
-  
   var onUpdate = function(obj) {
     // called when any applet variable changes
   }
@@ -36,7 +34,7 @@ TEXT( MODES(TeX=>'', HTML=><<END_SCRIPT ) );
   }
   
   encodedApp = "Your encoded app here";
-  wwGgb = new WwGgbApplet('applet1', {width: 400, height: 400, ggbBase64: encodedApp, appletOnLoad: onLoad, appletOnUpdate: onUpdate, hideAnswers: true}); 
+  new WwGgbApplet('applet1', {width: 400, height: 400, ggbBase64: encodedApp, appletOnLoad: onLoad, appletOnUpdate: onUpdate, hideAnswers: true}); 
 </script>
 END_SCRIPT
 
@@ -57,6 +55,8 @@ The bridge object provides these methods:
 
 - `setAnswer(answerId: string, value: string)`
    For a webwork answer id (such as 'AnSwEr0001'), set a value. Usually this value comes from Geogebra via `evalCommand`.
+- `getAnswer(answerId: string)`
+   Get a student answer, usually to re-insert into Geogebra with `evalCommand`.
 - `setCoordinateAnswer(answerId: string, keys: Array, answerKey: string)`
    A convenience method to set an answer from a set of coordinate keys, in the form "key1=(x,y);key2=(x,y);..."
 - `setCoordinates(answerId: string, default: object)`

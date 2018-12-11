@@ -59,6 +59,8 @@ class WwGgbApplet
   setAnswer: (answerId, value) ->
     @$container.find("##{answerId}").val(value).trigger('rapid-change')
 
+  getAnswer: (answerId) -> @$container.find("##{answerId}").val()
+
   hideAnswer: (answerId) ->
     @$container.find("##{answerId}").hide()
     _options.onHideAnswer(@$container, answerId)

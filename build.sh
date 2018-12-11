@@ -1,1 +1,2 @@
-coffee -o lib -b src/ww_ggb_applet.coffee 
+coffee -o lib -b src/*.coffee
+
