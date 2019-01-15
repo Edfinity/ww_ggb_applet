@@ -62,3 +62,7 @@ The bridge object provides these methods:
 - `setCoordinates(answerId: string, default: object)`
    Take a coordinate value from answerId and insert into the Geogebra applet. The default also provides the object names
    in the form {key1: '(x,y)', key2: '(x,y)'}
+
+## License
+
+This library is released under the [GPL Version 2.0](https://opensource.org/licenses/GPL-2.0) (or later) license.
